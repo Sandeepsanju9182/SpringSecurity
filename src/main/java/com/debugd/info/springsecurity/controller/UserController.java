@@ -4,6 +4,7 @@ import com.debugd.info.springsecurity.dto.UserRegisterRequestDTO;
 import com.debugd.info.springsecurity.dto.UserRegisterResponseDTO;
 import com.debugd.info.springsecurity.service.AuthService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -23,13 +24,13 @@ public class UserController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping("/hello")
-    public String Hello(){
+    public String Hello(Authentication authentication){
 //        System.out.println(passwordEncoder.encode("secret123"));
 //        System.out.println(passwordEncoder.encode("secret123"));
 //
 //        System.out.println(passwordEncoder.matches("secret123",
 //                "$2a$10$sDioJcUTRt/b/B92gyq1dexiczJrU4kdEDErzxNlgnZ3W0bGoFRSO"));
-        return "Hello";
+        return "Hello, you are logged in as : " + authentication.getName();
     }
 
     @PostMapping("/register")
