@@ -17,34 +17,40 @@ public class AuthService {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository,
-                       RoleRepository roleRepository,
-                       PasswordEncoder passwordEncoder) {
+    public AuthService(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserRegisterResponseDTO register(UserRegisterRequestDTO registerRequestDTO){
+    public UserRegisterResponseDTO register(
+            UserRegisterRequestDTO registerRequestDto) {
 
         User user = new User();
-        user.setUsername(registerRequestDTO.getUsername());
+        user.setUsername(registerRequestDto.getUsername());
 
-        String encodedPassword = passwordEncoder.encode(registerRequestDTO.getPassword());
+        String encodedPassword =
+                passwordEncoder.encode(registerRequestDto.getPassword());
 
         user.setPassword(encodedPassword);
         user.setEnabled(true);
 
         Role role = roleRepository.findByName("ROLE_USER").get();
+
         user.getRoles().add(role);
 
         userRepository.save(user);
 
-        UserRegisterResponseDTO responseDTO = new UserRegisterResponseDTO();
+        UserRegisterResponseDTO responseDto = new
+                UserRegisterResponseDTO();
 
-        responseDTO.setUsername(user.getUsername());
-        responseDTO.setMessage("User Registered Successfully");
+        responseDto.setUsername(user.getUsername());
+        responseDto.setMessage("User saved Successfully");
 
-        return responseDTO;
+        return responseDto;
+
     }
 }
